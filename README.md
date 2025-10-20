@@ -7,24 +7,28 @@ This project is a distributed microservices-based e-commerce application built w
 The application consists of the following microservices:
 
 1. **Customer Service**
+
    - Manages customer information
    - Provides REST endpoints for customer CRUD operations
    - Uses H2 in-memory database
    - Accessed via Gateway at `/customer-service`
 
 2. **Inventory Service**
+
    - Handles product inventory
    - Manages product information and stock levels
    - Provides REST endpoints for product management
    - Accessed via Gateway at `/inventory-service`
 
 3. **Billing Service**
+
    - Manages billing and orders
    - Links customers with their purchases
    - Handles product items and billing records
    - Accessed via Gateway at `/billing-service`
 
 4. **Discovery Service** (Port 8761)
+
    - Eureka Server for service discovery
    - Enables dynamic service registration and discovery
    - Provides service registry and load balancing
