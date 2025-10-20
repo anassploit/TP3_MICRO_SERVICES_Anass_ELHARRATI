@@ -6,34 +6,35 @@ This project is a distributed microservices-based e-commerce application built w
 
 The application consists of the following microservices:
 
-1. **Customer Service** (Port 8888)
-
+1. **Customer Service**
    - Manages customer information
    - Provides REST endpoints for customer CRUD operations
    - Uses H2 in-memory database
+   - Accessed via Gateway at `/customer-service`
 
-2. **Inventory Service** (Port 8882)
-
+2. **Inventory Service**
    - Handles product inventory
    - Manages product information and stock levels
    - Provides REST endpoints for product management
+   - Accessed via Gateway at `/inventory-service`
 
-3. **Billing Service** (Port 8083)
-
+3. **Billing Service**
    - Manages billing and orders
    - Links customers with their purchases
    - Handles product items and billing records
+   - Accessed via Gateway at `/billing-service`
 
 4. **Discovery Service** (Port 8761)
-
    - Eureka Server for service discovery
    - Enables dynamic service registration and discovery
    - Provides service registry and load balancing
+   - Manages service instances and health checks
 
-5. **Gateway Service** (Port 9999)
-   - Spring Cloud Gateway
+5. **Gateway Service** (Port 8888)
+   - Spring Cloud Gateway for unified access
    - Routes requests to appropriate microservices
    - Handles cross-cutting concerns
+   - Single entry point for all API requests
 
 ## Screenshots and Explanations
 
@@ -159,10 +160,35 @@ mvn spring-boot:run
 
 ## API Documentation
 
-- Customer Service: http://localhost:8888/api/customers
-- Inventory Service: http://localhost:8882/api/products
-- Billing Service: http://localhost:8083/api/bills
-- Eureka Dashboard: http://localhost:8761
+All services are accessible through the Gateway Service (Port 8888) which routes requests to the appropriate microservice:
+
+### Service Endpoints
+
+- Customer Service: `http://localhost:8888/customer-service/api/customers`
+- Inventory Service: `http://localhost:8888/inventory-service/api/products`
+- Billing Service: `http://localhost:8888/billing-service/api/bills`
+- Gateway Service: `http://localhost:8888`
+- Eureka Dashboard: `http://localhost:8761`
+
+### API Features
+
+- All endpoints support HATEOAS with HAL format
+- Pagination is available using `?page=0&size=20`
+- Projections can be requested using `?projection=projectionName`
+- Cross-service communication is handled transparently
+
+### Example Requests
+
+```bash
+# List all customers
+curl http://localhost:8888/customer-service/api/customers
+
+# Get a specific product
+curl http://localhost:8888/inventory-service/api/products/{id}
+
+# Get bills for a customer
+curl http://localhost:8888/billing-service/api/bills?customerId={id}
+```
 
 ## Architecture Diagram
 
@@ -174,14 +200,6 @@ The application follows a microservices architecture pattern with:
 - Configuration Management
 - Database per Service
 
-## Contributing
-
-This project is part of a microservices architecture demonstration. Feel free to fork and enhance it.
-
 ## Author
 
-- Anass ELHARRATI
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- Anass EL HARRATI
